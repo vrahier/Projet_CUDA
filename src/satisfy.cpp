@@ -8,6 +8,9 @@ using namespace std;
 
 #include "cpu_timer.h"
 
+int NB_PIGEONS = 10;
+int NB_PIGEONNIERS = 10;
+
 void satisfy_cpu(int min, int max, bool * satisfy, int * matrice, int CMAX, int LMAX){
 
 	//Pour chaque ligne, on calcule le nombre de 1 présents
@@ -71,23 +74,23 @@ void afficherMatriceTab(int * matrice, int CMAX, int LMAX){
 int main(int argc, char ** argv){
 
 
-	const int pigeons = atoi(argv[1]);
-	const int pigeonniers = atoi(argv[2]);
+	NB_PIGEONS = atoi(argv[1]);
+	NB_PIGEONNIERS = atoi(argv[2]);
 
-	int * cpu_matrice_tab = new int [pigeons*pigeonniers];
-	int * cpu_matriceTrans = new int[pigeons*pigeonniers];
+	int * cpu_matrice_tab = new int [NB_PIGEONS*NB_PIGEONNIERS];
+	int * cpu_matriceTrans = new int[NB_PIGEONS*NB_PIGEONNIERS];
 
-	bool * cpu_satisfy_pigeons = new bool[pigeons];
-	bool * cpu_satisfy_pigeonniers = new bool[pigeonniers];
+	bool * cpu_satisfy_pigeons = new bool[NB_PIGEONS];
+	bool * cpu_satisfy_pigeonniers = new bool[NB_PIGEONNIERS];
 
-	remplirMatriceTab(cpu_matrice_tab,pigeonniers,pigeons);
+	remplirMatriceTab(cpu_matrice_tab,NB_PIGEONNIERS,NB_PIGEONS);
 
 
 	cout << "Matrice" << endl;
 //	afficherMatriceTab(cpu_matrice_tab,pigeonniers,pigeons);
 	cout << endl;
 
-	transposeMatriceTab(cpu_matrice_tab,cpu_matriceTrans,pigeonniers,pigeons);
+	transposeMatriceTab(cpu_matrice_tab,cpu_matriceTrans,NB_PIGEONNIERS,NB_PIGEONS);
 
 	cout << "Matrice transposée" << endl;
 //	afficherMatriceTab(cpu_matriceTrans,pigeons,pigeonniers);
@@ -95,9 +98,9 @@ int main(int argc, char ** argv){
 
 	CPUTimer c_timer;
 	c_timer.start();
-	satisfy_cpu(1,1,cpu_satisfy_pigeons,cpu_matrice_tab,pigeonniers,pigeons);
+	satisfy_cpu(1,1,cpu_satisfy_pigeons,cpu_matrice_tab,NB_PIGEONNIERS,NB_PIGEONS);
 
-	satisfy_cpu(0,1,cpu_satisfy_pigeonniers,cpu_matriceTrans,pigeons,pigeonniers);
+	satisfy_cpu(0,1,cpu_satisfy_pigeonniers,cpu_matriceTrans,NB_PIGEONS,NB_PIGEONNIERS);
 
 
 	c_timer.stop();

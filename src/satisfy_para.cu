@@ -6,6 +6,10 @@
 
 #include "gpu_timer.h"
 
+
+int NB_PIGEONS = 10;
+int NB_PIGEONNIERS = 10;
+
 //Teste si les contraintes sont respectées pour la matrice sur le device
 //Chaque thread s'occupe d'une ligne
 __global__ void satisfy_gpu(int min, int max, bool * satisfy, int * matrice,int CMAX, int LMAX){
@@ -54,19 +58,18 @@ void remplirMatriceTab(int * matrice, int CMAX, int LMAX){
 int main(int argc, char ** argv){
 
 	//On récupère les arguments
-	const int pigeons = atoi(argv[1]);
-	const int pigeonniers = atoi(argv[2]);
+	NB_PIGEONS = atoi(argv[1]);
+	NB_PIGEONNIERS = atoi(argv[2]);
 
-	std::cout<<pigeons<<" "<<pigeonniers<<std::endl;
 
 	//Les matrices sont des tableaux, plus facile à envoyer vers le device après
-	int * cpu_matrice_tab = new int[pigeons*pigeonniers];
-	int * cpu_matriceTrans = new int[pigeons*pigeonniers];
+	int * cpu_matrice_tab = new int[NB_PIGEONS*NB_PIGEONNIERS];
+	int * cpu_matriceTrans = new int[NB_PIGEONS*NB_PIGEONNIERS];
 
 
 	//Tableau qui permet de récupérer les résultats des tests sur les lignes
-	bool * cpu_satisfy_pigeons = new bool[pigeons];
-	bool * cpu_satisfy_pigeonniers = new bool[pigeonniers];
+	bool * cpu_satisfy_pigeons = new bool[NB_PIGEONS];
+	bool * cpu_satisfy_pigeonniers = new bool[NB_PIGEONNIERS];
 
 	int * gpu_matrice_tab;
 	int * gpu_matriceTrans;
@@ -74,13 +77,13 @@ int main(int argc, char ** argv){
 	bool * gpu_satisfy_pigeonniers;
 
 	//On alloue
-	cudaMalloc((void **)&gpu_matrice_tab,pigeons*pigeonniers*sizeof(int));
-	cudaMalloc((void**)&gpu_satisfy_pigeons,pigeons*sizeof(bool));
-	cudaMalloc((void**)&gpu_satisfy_pigeonniers,pigeonniers*sizeof(bool));
-	cudaMalloc((void**)&gpu_matriceTrans,pigeons*pigeonniers*sizeof(int));
+	cudaMalloc((void **)&gpu_matrice_tab,NB_PIGEONS*NB_PIGEONNIERS*sizeof(int));
+	cudaMalloc((void**)&gpu_satisfy_pigeons,NB_PIGEONS*sizeof(bool));
+	cudaMalloc((void**)&gpu_satisfy_pigeonniers,NB_PIGEONNIERS*sizeof(bool));
+	cudaMalloc((void**)&gpu_matriceTrans,NB_PIGEONS*NB_PIGEONNIERS*sizeof(int));
 
 	//On remplit la matrice du cpu
-	remplirMatriceTab(cpu_matrice_tab,pigeonniers,pigeons);
+	remplirMatriceTab(cpu_matrice_tab,NB_PIGEONNIERS,NB_PIGEONS);
 
 
 	std::cout << "Matrice" << std::endl;
@@ -98,7 +101,7 @@ int main(int argc, char ** argv){
 	std::cout << std::endl;*/
 
 	//On transpose la matrice pour faire les calculs pour les pigeonniers
-	transposeMatriceTab(cpu_matrice_tab,cpu_matriceTrans,pigeonniers,pigeons);
+	transposeMatriceTab(cpu_matrice_tab,cpu_matriceTrans,NB_PIGEONNIERS,NB_PIGEONS);
 
 
 	std::cout << "Matrice transposée" << std::endl;
@@ -123,21 +126,21 @@ int main(int argc, char ** argv){
 
 	g_timer.start();
 
-	cudaMemcpy(gpu_matrice_tab,cpu_matrice_tab,sizeof(int)*pigeons*pigeonniers,cudaMemcpyHostToDevice);
+	cudaMemcpy(gpu_matrice_tab,cpu_matrice_tab,sizeof(int)*NB_PIGEONS*NB_PIGEONNIERS,cudaMemcpyHostToDevice);
 
 
 	//Teste la contrainte des pigeons sur chaque ligne (un pigeon ne peut être que dans un et un seul pigeonnier)
-	satisfy_gpu<<<1,pigeons>>>(1,1,gpu_satisfy_pigeons,gpu_matrice_tab,pigeonniers,pigeons);
+	satisfy_gpu<<<1,NB_PIGEONS>>>(1,1,gpu_satisfy_pigeons,gpu_matrice_tab,NB_PIGEONNIERS,NB_PIGEONS);
 
-	cudaMemcpy(cpu_satisfy_pigeons,gpu_satisfy_pigeons,sizeof(bool)*pigeons,cudaMemcpyDeviceToHost);
+	cudaMemcpy(cpu_satisfy_pigeons,gpu_satisfy_pigeons,sizeof(bool)*NB_PIGEONS,cudaMemcpyDeviceToHost);
 
-	cudaMemcpy(gpu_matriceTrans,cpu_matriceTrans,sizeof(int)*pigeons*pigeonniers,cudaMemcpyHostToDevice);
+	cudaMemcpy(gpu_matriceTrans,cpu_matriceTrans,sizeof(int)*NB_PIGEONS*NB_PIGEONNIERS,cudaMemcpyHostToDevice);
 
 	//Teste la contrainte des pigeonniers sur la transposée de la matrice initiale
 	//Un pigeonnier peut contenir 0 ou 1 pigeon
-	satisfy_gpu<<<1,pigeonniers>>>(0,1,gpu_satisfy_pigeonniers,gpu_matriceTrans,pigeons,pigeonniers);
+	satisfy_gpu<<<1,NB_PIGEONNIERS>>>(0,1,gpu_satisfy_pigeonniers,gpu_matriceTrans,NB_PIGEONS,NB_PIGEONNIERS);
 
-	cudaMemcpy(cpu_satisfy_pigeonniers,gpu_satisfy_pigeonniers,pigeonniers*sizeof(bool),cudaMemcpyDeviceToHost);
+	cudaMemcpy(cpu_satisfy_pigeonniers,gpu_satisfy_pigeonniers,NB_PIGEONNIERS*sizeof(bool),cudaMemcpyDeviceToHost);
 
 	g_timer.stop();
 
