@@ -5,6 +5,7 @@
 #include <stdexcept>
 
 #include "gpu_timer.h"
+#include "my_cuda.h"
 
 int NB_PIGEONS =0;
 int NB_PIGEONNIERS =0;
@@ -40,7 +41,7 @@ void transposeMatriceTab(int * m, int * mInverse,int CMAX, int LMAX){
 }
 
 
-//Pour le moment la matrice contient des 0 partout sauf au case où i=j
+//Pour le moment la matrice contient des 0 partout sauf au cas où i=j
 void remplirMatriceTab(int * matrice, int CMAX, int LMAX){
 
 	for(int i=0;i<CMAX;i++){
@@ -81,10 +82,10 @@ int main(int argc, char ** argv){
 	bool * gpu_satisfy_pigeonniers;
 
 	//On alloue
-	cudaMalloc((void **)&gpu_matrice_tab,NB_PIGEONS*NB_PIGEONNIERS*sizeof(int));
-	cudaMalloc((void**)&gpu_satisfy_pigeons,NB_PIGEONS*sizeof(bool));
-	cudaMalloc((void**)&gpu_satisfy_pigeonniers,NB_PIGEONNIERS*sizeof(bool));
-	cudaMalloc((void**)&gpu_matriceTrans,NB_PIGEONS*NB_PIGEONNIERS*sizeof(int));
+	cuda_check(cudaMalloc((void **)&gpu_matrice_tab,NB_PIGEONS*NB_PIGEONNIERS*sizeof(int)));
+	cuda_check(cudaMalloc((void**)&gpu_satisfy_pigeons,NB_PIGEONS*sizeof(bool)));
+	cuda_check(cudaMalloc((void**)&gpu_satisfy_pigeonniers,NB_PIGEONNIERS*sizeof(bool)));
+	cuda_check(cudaMalloc((void**)&gpu_matriceTrans,NB_PIGEONS*NB_PIGEONNIERS*sizeof(int)));
 
 	//On remplit la matrice du cpu
 	remplirMatriceTab(cpu_matrice_tab,NB_PIGEONNIERS,NB_PIGEONS);
@@ -130,21 +131,24 @@ int main(int argc, char ** argv){
 
 	g_timer.start();
 
-	cudaMemcpy(gpu_matrice_tab,cpu_matrice_tab,sizeof(int)*NB_PIGEONS*NB_PIGEONNIERS,cudaMemcpyHostToDevice);
+	cuda_check(cudaMemcpy(gpu_matrice_tab,cpu_matrice_tab,sizeof(int)*NB_PIGEONS*NB_PIGEONNIERS,cudaMemcpyHostToDevice));
 
 
 	//Teste la contrainte des pigeons sur chaque ligne (un pigeon ne peut être que dans un et un seul pigeonnier)
 	satisfy_gpu<<<1,NB_PIGEONS>>>(1,1,gpu_satisfy_pigeons,gpu_matrice_tab,NB_PIGEONNIERS,NB_PIGEONS);
+	cuda_check_kernel();
 
-	cudaMemcpy(cpu_satisfy_pigeons,gpu_satisfy_pigeons,sizeof(bool)*NB_PIGEONS,cudaMemcpyDeviceToHost);
+	cuda_check(cudaMemcpy(cpu_satisfy_pigeons,gpu_satisfy_pigeons,sizeof(bool)*NB_PIGEONS,cudaMemcpyDeviceToHost));
 
-	cudaMemcpy(gpu_matriceTrans,cpu_matriceTrans,sizeof(int)*NB_PIGEONS*NB_PIGEONNIERS,cudaMemcpyHostToDevice);
+	cuda_check(cudaMemcpy(gpu_matriceTrans,cpu_matriceTrans,sizeof(int)*NB_PIGEONS*NB_PIGEONNIERS,cudaMemcpyHostToDevice));
 
 	//Teste la contrainte des pigeonniers sur la transposée de la matrice initiale
 	//Un pigeonnier peut contenir 0 ou 1 pigeon
 	satisfy_gpu<<<1,NB_PIGEONNIERS>>>(0,1,gpu_satisfy_pigeonniers,gpu_matriceTrans,NB_PIGEONS,NB_PIGEONNIERS);
+	cuda_check_kernel();
 
-	cudaMemcpy(cpu_satisfy_pigeonniers,gpu_satisfy_pigeonniers,NB_PIGEONNIERS*sizeof(bool),cudaMemcpyDeviceToHost);
+
+	cuda_check(cudaMemcpy(cpu_satisfy_pigeonniers,gpu_satisfy_pigeonniers,NB_PIGEONNIERS*sizeof(bool),cudaMemcpyDeviceToHost));
 
 	g_timer.stop();
 
