@@ -73,9 +73,15 @@ void afficherMatriceTab(int * matrice, int CMAX, int LMAX){
 
 int main(int argc, char ** argv){
 
+	if((argv[1])&& (argv[2])){
+		NB_PIGEONS = atoi(argv[1]);
+		NB_PIGEONNIERS = atoi(argv[2]);
+	}else
+	{
+		cout<<"veuillez remplir en paramètre le nombre de pigeon et de pigeonniez de cette façon :"<<endl<<"./satifsy.exe NB_PIGEONS NB_PIGONNIERS"<<endl;
+		exit (EXIT_FAILURE);
+	}
 
-	NB_PIGEONS = atoi(argv[1]);
-	NB_PIGEONNIERS = atoi(argv[2]);
 
 	int * cpu_matrice_tab = new int [NB_PIGEONS*NB_PIGEONNIERS];
 	int * cpu_matriceTrans = new int[NB_PIGEONS*NB_PIGEONNIERS];
