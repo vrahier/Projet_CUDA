@@ -8,8 +8,8 @@ using namespace std;
 
 #include "cpu_timer.h"
 
-int NB_PIGEONS = 10;
-int NB_PIGEONNIERS = 10;
+int NB_PIGEONS =0;
+int NB_PIGEONNIERS =0;
 
 void satisfy_cpu(int min, int max, bool * satisfy, int * matrice, int CMAX, int LMAX){
 
@@ -78,7 +78,8 @@ int main(int argc, char ** argv){
 		NB_PIGEONNIERS = atoi(argv[2]);
 	}else
 	{
-		cout<<"veuillez remplir en paramètre le nombre de pigeon et de pigeonniez de cette façon :"<<endl<<"./satifsy.exe NB_PIGEONS NB_PIGONNIERS"<<endl;
+		cout<<"veuillez remplir en paramètre le nombre de pigeon et de pigeonniez de cette façon :"<<endl;
+		cout<<"./satifsy.exe NB_PIGEONS NB_PIGONNIERS"<<endl;
 		exit (EXIT_FAILURE);
 	}
 

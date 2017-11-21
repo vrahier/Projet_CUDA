@@ -6,10 +6,8 @@
 
 #include "gpu_timer.h"
 
-
-int NB_PIGEONS = 10;
-int NB_PIGEONNIERS = 10;
-
+int NB_PIGEONS =0;
+int NB_PIGEONNIERS =0;
 //Teste si les contraintes sont respectées pour la matrice sur le device
 //Chaque thread s'occupe d'une ligne
 __global__ void satisfy_gpu(int min, int max, bool * satisfy, int * matrice,int CMAX, int LMAX){
@@ -58,9 +56,15 @@ void remplirMatriceTab(int * matrice, int CMAX, int LMAX){
 int main(int argc, char ** argv){
 
 	//On récupère les arguments
-	NB_PIGEONS = atoi(argv[1]);
-	NB_PIGEONNIERS = atoi(argv[2]);
-
+	if((argv[1])&& (argv[2])){
+		NB_PIGEONS = atoi(argv[1]);
+		NB_PIGEONNIERS = atoi(argv[2]);
+	}else
+	{
+		cout<<"veuillez remplir en paramètre le nombre de pigeon et de pigeonniez de cette façon :"<<endl;
+		cout<<"./satifsy.exe NB_PIGEONS NB_PIGONNIERS"<<endl;
+		exit (EXIT_FAILURE);
+	}
 
 	//Les matrices sont des tableaux, plus facile à envoyer vers le device après
 	int * cpu_matrice_tab = new int[NB_PIGEONS*NB_PIGEONNIERS];
