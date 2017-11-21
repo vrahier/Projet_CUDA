@@ -8,9 +8,9 @@ IEEE_COMPLIANCE=-ftz=false -prec-div=true -prec-sqrt=true
 
 NVCC_FLAGS=$(CUFLAGS) $(IEEE_COMPLIANCE)
 
-all: satisfy gpu_satisfy
+all: bin/satisfy.exe bin/gpu_satisfy.exe
 
-satisfy: obj/cpu_timer.o obj/satisfy.o
+bin/satisfy.exe: obj/cpu_timer.o obj/satisfy.o
 	g++ -std=c++11 -o bin/satisfy.exe obj/satisfy.o obj/cpu_timer.o
 	
 obj/satisfy.o: src/satisfy.cpp
@@ -19,7 +19,7 @@ obj/satisfy.o: src/satisfy.cpp
 obj/cpu_timer.o: src/cpu_timer.cpp
 	g++ -std=c++11 -o obj/cpu_timer.o -c src/cpu_timer.cpp
 	
-gpu_satisfy: src/satisfy_para.cu obj/gpu_timer.o
+bin/gpu_satisfy.exe: src/satisfy_para.cu obj/gpu_timer.o
 	nvcc src/satisfy_para.cu -o bin/gpu_satisfy.exe obj/gpu_timer.o $(NVCC_FLAGS)
 	
 obj/gpu_timer.o: src/gpu_timer.cu
