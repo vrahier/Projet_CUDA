@@ -10,20 +10,21 @@ NVCC_FLAGS=$(CUFLAGS) $(IEEE_COMPLIANCE)
 
 all: satisfy gpu_satisfy
 
-satisfy: bin/cpu_timer.o bin/satisfy.o
-	g++ -std=c++11 -o satisfy bin/satisfy.o bin/cpu_timer.o
+satisfy: obj/cpu_timer.o obj/satisfy.o
+	g++ -std=c++11 -o bin/satisfy.exe obj/satisfy.o obj/cpu_timer.o
 	
-bin/satisfy.o: src/satisfy.cpp
-	g++ -std=c++11 -o bin/satisfy.o -c src/satisfy.cpp
+obj/satisfy.o: src/satisfy.cpp
+	g++ -std=c++11 -o obj/satisfy.o -c src/satisfy.cpp
 	
-bin/cpu_timer.o: src/cpu_timer.cpp
-	g++ -std=c++11 -o bin/cpu_timer.o -c src/cpu_timer.cpp
+obj/cpu_timer.o: src/cpu_timer.cpp
+	g++ -std=c++11 -o obj/cpu_timer.o -c src/cpu_timer.cpp
 	
-gpu_satisfy: src/satisfy_para.cu bin/gpu_timer.o
-	nvcc src/satisfy_para.cu -o gpu_satisfy bin/gpu_timer.o $(NVCC_FLAGS)
+gpu_satisfy: src/satisfy_para.cu obj/gpu_timer.o
+	nvcc src/satisfy_para.cu -o bin/gpu_satisfy.exe obj/gpu_timer.o $(NVCC_FLAGS)
 	
-bin/gpu_timer.o: src/gpu_timer.cu
-	nvcc --compile src/gpu_timer.cu -o bin/gpu_timer.o $(NVCC_FLAGS)
+obj/gpu_timer.o: src/gpu_timer.cu
+	nvcc --compile src/gpu_timer.cu -o obj/gpu_timer.o $(NVCC_FLAGS)
 	
 clean:
 	rm -rf bin/*
+	rm -rf obj/*
