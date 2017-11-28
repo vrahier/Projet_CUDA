@@ -17,6 +17,7 @@ Formule Formule::parseString(std::string str) {
     /*
      * Séparation de la chaine en mot
      */
+    std::cout << "Formule::parseString \"" << str << "\"" << std::endl;
     std::istringstream iss(str);
 
     std::vector<std::string> tokens;
@@ -38,9 +39,9 @@ Formule Formule::parseString(std::string str) {
      * Reste des mots : atomes. Appelle de la methode parseString de Atome pour chacun des mots.
      */
     for(int i = 2; i < tokens.size(); ++i){
+        std::cout << "\tFormule::parseString token[" << i << "] = " << tokens[i] << std::endl;
         f.addAtome(Atome::parseString(tokens[i]));
     }
-
     return f;
 }
 

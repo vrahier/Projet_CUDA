@@ -77,7 +77,7 @@ bool Atome::operator!=(const Atome &rhs) const {
 }
 
 Atome Atome::parseString(std::string str) {
-    std::cout << "Atome::parseString " << str << std::endl;
+    std::cout << "\t\tAtome::parseString " << str << std::endl;
     if(str[0] == '-'){
         return Atome(str.substr(1), true);
     }
