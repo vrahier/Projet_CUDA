@@ -8,10 +8,21 @@ IEEE_COMPLIANCE=-ftz=false -prec-div=true -prec-sqrt=true
 
 NVCC_FLAGS=$(CUFLAGS) $(IEEE_COMPLIANCE)
 
-all: bin/satisfy.exe bin/gpu_satisfy.exe
+all: bin/satisfy.exe bin/gpu_satisfy.exe bin/testCpu.exe
+
+test : bin/testCpu.exe
 
 bin/satisfy.exe: obj/cpu_timer.o obj/satisfy.o
 	g++ -std=c++11 -o bin/satisfy.exe obj/satisfy.o obj/cpu_timer.o
+
+bin/testCpu.exe : obj/cpu_test.o obj/matrix_gen.o
+	g++ -std=c++11 -o bin/testCpu.exe obj/cpu_test.o obj/matrix_gen.o
+	
+obj/cpu_test.o : src/cpu_test.cpp
+	g++ -std=c++11 -o obj/cpu_test.o -c src/cpu_test.cpp
+
+obj/matrix_gen.o : src/matrix_gen.cpp
+	g++ -std=c++11 -o obj/matrix_gen.o -c src/matrix_gen.cpp
 	
 obj/satisfy.o: src/satisfy.cpp
 	g++ -std=c++11 -o obj/satisfy.o -c src/satisfy.cpp
