@@ -47,6 +47,9 @@ public:
 
 	long int get_milli_seconds();
 
+	long int get_nano_seconds();
+
+    long int get_micro_seconds();
 	/**
 	 *
 	 */

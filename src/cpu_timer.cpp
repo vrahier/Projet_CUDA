@@ -36,3 +36,15 @@ long int CPUTimer::get_milli_seconds() {
 	std::chrono::milliseconds msec = std::chrono::duration_cast<std::chrono::milliseconds>(diff);
 	return static_cast<long int>(msec.count());
 }
+
+long int CPUTimer::get_nano_seconds() {
+    auto diff = m_event_stop - m_event_start;
+    std::chrono::nanoseconds nsec = std::chrono::duration_cast<std::chrono::nanoseconds>(diff);
+    return static_cast<long int>(nsec.count());
+}
+
+long int CPUTimer::get_micro_seconds() {
+    auto diff = m_event_stop - m_event_start;
+    std::chrono::nanoseconds usec = std::chrono::duration_cast<std::chrono::microseconds>(diff);
+    return static_cast<long int>(usec.count());
+}

@@ -70,7 +70,6 @@ void remplirMatriceTab(char * matrice, int CMAX, int LMAX){
 }
 
 
-
 int main(int argc, char ** argv){
 
 	if((argv[1])&& (argv[2])){
