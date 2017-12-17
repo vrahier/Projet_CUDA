@@ -14,8 +14,10 @@
 
 int main(int argc, char * argv[]){
 
+    std::string file_name = "pb_pigeons_8_8.txt";
+
     Solver solver;
-    solver.parseFile("pb_pigeons_6_5.txt");
+    solver.parseFile(file_name.c_str());
 
     solver.display_full(std::cout);
     solver.display_readable_formula(std::cout);
@@ -24,20 +26,8 @@ int main(int argc, char * argv[]){
     for(auto it = solver._var_table.begin(); it != solver._var_table.end(); ++it){
         unasigned_vars.insert(it->second);
     }
-/*
-    std::stack<Solver::var *> step_vars;
-
-    solver.assign_value(solver._var_table.begin()->second, true, unasigned_vars, step_vars );
 
     solver.display_full(std::cout);
-
-
-    while(!step_vars.empty()){
-        solver.remove_assign(step_vars.top());
-        step_vars.pop();
-    }
-
-    solver.display_full(std::cout);*/
 
     std::srand(std::time(NULL));
 
@@ -47,11 +37,11 @@ int main(int argc, char * argv[]){
     bool hasSol = solver.solve();
     timer.stop();
     if(hasSol){
-        std::cout << "\033[32mSolution trouvé\033[0m" << std::endl; //TODO : feu d'artifice
         solver.display_var_value(std::cout);
+        std::cout << "\033[32mSolution trouvé à" << file_name << "\033[0m" << std::endl; //TODO : feu d'artifice
     }
     else{
-        std::cout << "\033[31mPas de solution\033[0m" << std::endl;
+        std::cout << "\033[31mPas de solution à "<< file_name << "\033[0m" << std::endl;
     }
     std::cout << "Time : " << timer.get_milli_seconds() << "ms";
 

@@ -24,7 +24,8 @@ public:
 
         int min;
         int max;
-        int actual_sum;
+        long int current_sum;
+        long int unassigned_var_left;
         std::vector<formula_var> vars;
     };
 
@@ -34,7 +35,7 @@ public:
     };
 
     struct var{
-        std::string id;
+        std::string name;
 
         friend std::ostream &operator<<(std::ostream &os, const var &var);
 
@@ -69,7 +70,7 @@ public:
 
     bool check_satisfy();
 
-    void assign_value(var * v, bool value, std::set<var *>& unasigned_vars, std::stack<var*>& step_assigned_vars);
+    void assign_value(var * v, bool value, std::set<var *>& unasigned_vars);
 
     void remove_assign(var * v, std::set<var*>& unasigned_var);
 };
