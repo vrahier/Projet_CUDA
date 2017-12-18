@@ -7,6 +7,7 @@
 #include <iostream>
 #include <set>
 #include <stack>
+#include <sstream>
 #include "Utilities/file.h"
 #include "Solver.h"
 #include "cpu_timer.h"
@@ -14,7 +15,13 @@
 
 int main(int argc, char * argv[]){
 
-    std::string file_name = "pb_pigeons_8_8.txt";
+    int p = std::atoi(argv[1]);
+    int q = std::atoi(argv[2]);
+
+    std::stringstream ss;
+    ss << "pb_pigeons_" << p << "_" << q << ".txt";
+
+    std::string file_name = ss.str();
 
     Solver solver;
     solver.parseFile(file_name.c_str());
@@ -43,8 +50,7 @@ int main(int argc, char * argv[]){
     else{
         std::cout << "\033[31mPas de solution à "<< file_name << "\033[0m" << std::endl;
     }
-    std::cout << "Time : " << timer.get_milli_seconds() << "ms";
 
-
+    timer.print(std::cout);
 	return 0;
 }

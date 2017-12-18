@@ -29,7 +29,12 @@ void Solver::parseFile(const char *path) {
 }
 
 Solver::~Solver() {
-
+    for(auto it = _var_table.begin(); it != _var_table.end(); ++it){
+        delete it->second;
+    }
+    for(auto it = _formulas.begin(); it != _formulas.end(); ++it){
+        delete *it;
+    }
 }
 
 
@@ -217,6 +222,24 @@ bool Solver::solve() {
                             remove_assign(*it, unasigned_vars);
                         }
                     }
+
+                    //Libération de la mémoire
+                    bool stop(false);
+                    while ( (not stop) and (not evaluated_nodes.empty())) {
+                            node *toDelete = evaluated_nodes.top();
+                            if (toDelete->childT == NULL && toDelete->childF == NULL) {
+                                evaluated_nodes.pop();
+                                node *parent = toDelete->parent;
+                                if (parent->childT == toDelete) {
+                                    parent->childT = NULL;
+                                } else {
+                                    parent->childF = NULL;
+                                }
+                                delete toDelete;
+                            } else {
+                                stop = true;
+                            }
+                    }
                 }
             }
         } else {
@@ -230,7 +253,7 @@ bool Solver::solve() {
             n->childT = new node;
             n->childT->first_assigned_var = *(unasigned_vars.begin());
             n->childT->done = false;
-            n->childT->var_value = true;
+            n->childT->var_value = false;
             n->childT->childT = NULL;
             n->childT->childF = NULL;
             n->childT->parent = n;
@@ -239,7 +262,7 @@ bool Solver::solve() {
             n->childF = new node;
             n->childF->first_assigned_var = *(unasigned_vars.begin());
             n->childF->done = false;
-            n->childF->var_value = false;
+            n->childF->var_value = true;
             n->childF->childT = NULL;
             n->childF->childF = NULL;
             n->childF->parent = n;
@@ -248,6 +271,17 @@ bool Solver::solve() {
             created += 2;
 //                std::cout << "Created node" << std::endl;
         }
+    }
+
+    //Suppression des noeuds
+    while(not evaluated_nodes.empty()){
+        delete evaluated_nodes.top();
+        evaluated_nodes.pop();
+    }
+
+    while(not node_stack.empty()){
+        delete node_stack.top();
+        node_stack.pop();
     }
 
     return solution_found;
@@ -288,12 +322,12 @@ void Solver::assign_value(Solver::var *v, bool value, std::set<var *> &unasigned
                         //On assigne true si variable négative (donc not v <-> false dans la formule), false sinon
                     }
                 }
-            }else if (it->first->current_sum + it->first->unassigned_var_left == it->first->min) {
+            } else if (it->first->current_sum + it->first->unassigned_var_left == it->first->min) {
                 //Si la somme de la somme courante et du nombre de variable non assigné restant dans la variable est égale à la somme minimal necessaire
                 //Alors pour toute les variables restante dans cette formule
                 //On assigne les variables restantes
-                for(auto itv = it->first->vars.begin(); itv != it->first->vars.end(); ++itv){
-                    if(!(*itv).matching_var->assigned){
+                for (auto itv = it->first->vars.begin(); itv != it->first->vars.end(); ++itv) {
+                    if (!(*itv).matching_var->assigned) {
                         assign_value(itv->matching_var, itv->positive, unasigned_vars);
                     }
                 }
