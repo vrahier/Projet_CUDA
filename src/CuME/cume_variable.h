@@ -48,6 +48,7 @@ public:
 	}
 	
 	virtual ~Variable() {
+        std::cout << "Destructor variable" << std::endl;
 		cume_free(m_cpu_value);
 	}
 	
@@ -76,7 +77,6 @@ public:
 		cume_pull(&m_cpu_value, m_gpu_value, T, 1);
 	}
 
-		
 	ostream& print(ostream& out) {
 		out << m_cpu_value;
 		return out;

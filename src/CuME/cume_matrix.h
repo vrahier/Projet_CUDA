@@ -88,7 +88,7 @@ public:
 	Matrix<T>& operator=(const Matrix<T>& object) {
 		if (&object != this) {
 			delete [] m_cpu_data;
-			m_cuda_free(m_gpu_data);
+			cume_free(m_gpu_data);
 			m_size = object.m_size;
 			m_rows = object.m_rows;
 			m_cols = object.m_cols;
