@@ -15,6 +15,8 @@
 #include <vector>
 #include <cstdlib>
 
+
+#include "CuME/cume_base.h"
 #include "CuME/cume.h"
 #include "CuME/cume_variable.h"
 
@@ -37,8 +39,6 @@
  * Calcule de la somme avec les variable actuellement assigné dans une formule i
  * Pour j de 0 à n_var
  *     sum += (m_f[i][j+2] == var_value[j]) * assigned
- *
- *
  *
  * Déduire les assignements de variables
  *  Thread pour une variable j
@@ -63,6 +63,7 @@ kernel_check_assign(cume::Kernel::Resource *res, int *matrix_formulas, int *assi
         toAssign[gtid] =
                 (assigned[gtid] - 1) * (sum[i] == matrix_formulas[i * (n_var + VAR_OFFSET) + F_MAX]) *
                 (matrix_formulas[i * (VAR_OFFSET + n_var) + gtid + VAR_OFFSET]);
+
         ++i;
     }
 }
@@ -89,7 +90,7 @@ kernel_compute_sum(cume::Kernel::Resource *res, int *matrix, int *value, int *as
 //    printf("Compute sum thread %d -> %d\n", gtid, sum[gtid]);
 }
 
-__global__ void kernel_check_sum(cume::Kernel::Resource *res, int *result, int *sum, int *matrix, int n_formulas,
+__global__ void kernel_check_sum(cume::Kernel::Resource *res, int *result, int * backtrack, int *sum, int *matrix, int n_formulas,
                                  int n_var){
     *result = 0;
     int i = 0;
@@ -97,6 +98,7 @@ __global__ void kernel_check_sum(cume::Kernel::Resource *res, int *result, int *
 //        printf("%d ", sum[i] >= matrix[i * (n_var + VAR_OFFSET) + F_MIN] && sum[i] <= matrix[i * (n_var + VAR_OFFSET) + F_MAX]);
         *result += sum[i] >= matrix[i * (n_var + VAR_OFFSET) + F_MIN] && sum[i] <= matrix[i * (n_var + VAR_OFFSET) + F_MAX];
 //        printf("%d\n", *result);
+        *backtrack += sum[i] > matrix[i * (n_var + VAR_OFFSET) + F_MAX];
         ++i;
     }
 }
@@ -163,7 +165,7 @@ void deleteNode(node *node) {
  * @return
  */
 bool gpu_solve(int n_var, int n_formulas, cume::Matrix<int> matrix_formulas) {
-    //TODO aligner les tableaux sur une puissance sur un multiple de 4/8/16 <3
+    //TODO aligner les tableaux sur 128 bits ???
     int var_array_size = n_var;
     int formula_array_size = n_formulas;
     cume::Array<int> assigned(var_array_size, 0);
@@ -172,8 +174,9 @@ bool gpu_solve(int n_var, int n_formulas, cume::Matrix<int> matrix_formulas) {
     cume::Array<int> sum(formula_array_size, 0);
 
     cume::Variable<int> * array_sum_result  = new cume::Variable<int>(0);
+    cume::Variable<int> * backtrack = new cume::Variable<int>(0);
 
-    cume::Devices::get_instance().memory_report(cout);
+//    cume::Devices::get_instance().memory_report(std::cout);
     std::stack < node * > toEvaluate;
     std::stack < node * > evaluated;
 
@@ -210,8 +213,8 @@ bool gpu_solve(int n_var, int n_formulas, cume::Matrix<int> matrix_formulas) {
         toEvaluate.pop();
         evaluated.push(n);
 
-        assigned.pull();
-        var_value.pull();
+//        assigned.pull();
+//        var_value.pull();
 
 //        std::cout << "\033[31mNode : " << n->var << " - " << n->value << " (" << n << " - parent " << n->parent << ")\033[0m" << std::endl;
 
@@ -224,10 +227,8 @@ bool gpu_solve(int n_var, int n_formulas, cume::Matrix<int> matrix_formulas) {
 
         int hasAssign(0);
 
-        assigned.push();
-        var_value.push();
-
-
+        cume_push(assigned.m_gpu_data + n->var, assigned.m_cpu_data + n->var, int, 1);
+        cume_push(var_value.m_gpu_data + n->var, var_value.m_cpu_data + n->var, int, 1);
 
         do {
 
@@ -254,8 +255,8 @@ bool gpu_solve(int n_var, int n_formulas, cume::Matrix<int> matrix_formulas) {
             }
 
             {
-//  __global__ void kernel_check_sum(cume::Kernel::Resource * res, int * result, int * sum, int * matrix, int n_formulas, int n_var){
-                kernel_call(kernel_check_sum, kernelSumArray, array_sum_result->m_gpu_value, &sum, &matrix_formulas, n_formulas, n_var);
+//__global__ void kernel_check_sum(cume::Kernel::Resource *res, int *result, int * backtrack, int *sum, int *matrix, int n_formulas, int n_var)
+                kernel_call(kernel_check_sum, kernelSumArray, array_sum_result->m_gpu_value, backtrack->m_gpu_value, &sum, &matrix_formulas, n_formulas, n_var);
             }
             array_sum_result->pull();
 //            std::cout << "array_sum_result : " << array_sum_result->m_cpu_value << std::endl;
@@ -263,30 +264,29 @@ bool gpu_solve(int n_var, int n_formulas, cume::Matrix<int> matrix_formulas) {
 //            std::cout << "assigned\t" << assigned;
 //            std::cout << "check " << check << std::endl;
 //            std::cout << "sum :  " << sum;
-            if (array_sum_result->m_cpu_value == n_formulas){
-                hasSolution = true;
-                break;
-            }
+            backtrack->pull();
 
+            if(!backtrack->m_cpu_value) {
 //          kernel_check_assign(cume::Kernel::Resource * res, int **matrix_formulas, int *assigned, int *var_value,
 //                              int *sum, int n_var, int n_formulas, int *toAssign, int *hasAssigned) {
-            {
-                kernel_call(kernel_check_assign, kernelVar, &matrix_formulas, &assigned, &var_value, &sum, n_var,
-                            n_formulas, &toAssign);
-            }
-            toAssign.pull();
+                {
+                    kernel_call(kernel_check_assign, kernelVar, &matrix_formulas, &assigned, &var_value, &sum, n_var,
+                                n_formulas, &toAssign);
+                }
+                toAssign.pull();
 
-            {
+                {
 //                __global__ void kernel_check_has_assign(cume::Kernel::Resource * res, int * result, int * toAssign, int n_var){
 
-                    kernel_call(kernel_check_has_assign, kernelSumArray, array_sum_result->m_gpu_value, &toAssign, n_var);
+                    kernel_call(kernel_check_has_assign, kernelSumArray, array_sum_result->m_gpu_value, &toAssign,
+                                n_var);
+                }
+
+                array_sum_result->pull();
+
+
+                hasAssign = array_sum_result->m_cpu_value;
             }
-
-            array_sum_result->pull();
-
-
-            hasAssign = array_sum_result->m_cpu_value;
-
             //Debug
 //            toAssign.pull();
 //            std::cout << "hasAssign : " << hasAssign << std::endl;
@@ -294,21 +294,25 @@ bool gpu_solve(int n_var, int n_formulas, cume::Matrix<int> matrix_formulas) {
 //            std::cout << "toAssign : " << toAssign;
 
 //            std::cout << "Fin itération" << std::endl;
-        } while (hasAssign);
+        } while (hasAssign && !backtrack->m_cpu_value);
 
         if (!hasSolution) {
-            assigned.pull();
+            int count_assigned(0);
+            if(!backtrack->m_cpu_value) {
+                {
+//                __global__ void kernel_check_has_assign(cume::Kernel::Resource * res, int * result, int * toAssign, int n_var){
 
-//            std::cout << "sum : " << sum << std::endl;
+                    kernel_call(kernel_check_has_assign, kernelSumArray, array_sum_result->m_gpu_value, &assigned,
+                                n_var);
+                }
 
-            int count_assigned = 0;
-            for (auto it = assigned.begin(); it != assigned.end(); ++it) {
-                count_assigned += *it;
+                array_sum_result->pull();
+
+                count_assigned = array_sum_result->m_cpu_value;
             }
-//            std::cout << "assigned : " << assigned;
-//            std::cout << "count_assigned : " << count_assigned << std::endl;
-            if (count_assigned < n_var) {
+            if (count_assigned < n_var && !backtrack->m_cpu_value) {
                 //Toutes les variables ne sont pas assignées. Création des noeuds enfant
+                assigned.pull();
                 int var(0);
                 while (assigned[var] != 0) {
                     var++;
@@ -318,27 +322,46 @@ bool gpu_solve(int n_var, int n_formulas, cume::Matrix<int> matrix_formulas) {
                 toEvaluate.push(n->child1);
                 toEvaluate.push(n->child2);
 
-            } else { //toutes les variables sont assignées
-                if (!toEvaluate.empty()) {
-                    //Il reste des noeuds à évaluer
-                    node *nextNode = toEvaluate.top();
-                    std::copy(&(nextNode->assignement_state[0]), &(nextNode->assignement_state[var_array_size]), &assigned[0]);
-                    assigned.push();
-//                    std::cout << "Backtracking" << std::endl;
+            } else { //toutes les variables sont assignées OU backtrack
+                //kernel_compute_sum(cume::Kernel::Resource * res, int ** matrix, int * value, int * assigned, int * sum,
+                //                   int n_var, int n_formulas, int * satisfy)
+                {
+                    kernel_call(kernel_compute_sum, kernelFormula, &matrix_formulas, &var_value, &assigned, &sum, n_var,
+                                n_formulas);
                 }
-                //Libération de la mémoire
-                bool stop(false);
+
+                {
+//__global__ void kernel_check_sum(cume::Kernel::Resource *res, int *result, int * backtrack, int *sum, int *matrix, int n_formulas, int n_var)
+                    kernel_call(kernel_check_sum, kernelSumArray, array_sum_result->m_gpu_value, backtrack->m_gpu_value, &sum, &matrix_formulas, n_formulas, n_var);
+                }
+                array_sum_result->pull();
+
+                if(array_sum_result->m_cpu_value == n_formulas){
+                    hasSolution = true;
+                }
+                else {
+                    if (!toEvaluate.empty()) {
+                        //Il reste des noeuds à évaluer
+                        node *nextNode = toEvaluate.top();
+                        std::copy(&(nextNode->assignement_state[0]), &(nextNode->assignement_state[var_array_size]),
+                                  &assigned[0]);
+                        assigned.push();
+//                    std::cout << "Backtracking" << std::endl;
+                    }
+                    //Libération de la mémoire
+                    bool stop(false);
 //                std::cout << "Start free memory" << std::endl;
-                while ((not stop) and (not evaluated.empty())) {
-                    node *toDelete = evaluated.top();
+                    while ((not stop) and (not evaluated.empty())) {
+                        node *toDelete = evaluated.top();
 //                    std::cout << "Evaluate node " << toDelete << std::endl;
-                    if (toDelete->child1 == NULL && toDelete->child2 == NULL) {
-                        evaluated.pop();
+                        if (toDelete->child1 == NULL && toDelete->child2 == NULL) {
+                            evaluated.pop();
 //                        std::cout << "Delete node " << toDelete << std::endl;
-                        deleteNode(toDelete);
+                            deleteNode(toDelete);
 //                        std::cout << "Deleted node " << toDelete << std::endl;
-                    } else {
-                        stop = true;
+                        } else {
+                            stop = true;
+                        }
                     }
                 }
 //                std::cout << "End free memory" << std::endl;
@@ -378,7 +401,7 @@ int main(int argc, char *argv[]) {
     }
 
     parseFile(filename.c_str(), formules, n_var, n_formulas);
-
+/*
     for (int i = 0; i < formules.m_rows; ++i) {
         std::cout << formules.get(i, 0) << " " << formules.get(i, 1) << " | ";
         for (int j = 2; j < formules.m_cols; j++) {
@@ -386,9 +409,9 @@ int main(int argc, char *argv[]) {
         }
         std::cout << std::endl;
     }
-
-    std::cout << "n_formulas : " << n_formulas << std::endl;
-    std::cout << "n_var : " << n_var << std::endl;
+*/
+//    std::cout << "n_formulas : " << n_formulas << std::endl;
+//    std::cout << "n_var : " << n_var << std::endl;
 
     cume::GPUTimer gpu_timer;
     cume::CPUTimer cpu_timer;

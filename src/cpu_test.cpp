@@ -15,14 +15,14 @@
 
 int main(int argc, char * argv[]){
 
-    int p = std::atoi(argv[1]);
-    int q = std::atoi(argv[2]);
 
-    std::stringstream ss;
-    ss << "pb_pigeons_" << p << "_" << q << ".txt";
-
-    std::string file_name = ss.str();
-
+    std::string file_name;
+    if(argc > 1){
+        file_name = argv[1];
+    }
+    else{
+        file_name = "pb_pigeons_8_8.txt";
+    }
     Solver solver;
     solver.parseFile(file_name.c_str());
 

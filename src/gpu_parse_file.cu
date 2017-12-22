@@ -38,7 +38,7 @@ parseFile(const char *filepath, cume::Matrix<int> &dest, int &n_var, int &n_form
 
     for (auto it = reader.begin(); it != reader.end(); it++) {
         if (it->length() != 0) {
-            std::cout << "Parsing line \"" << *it << "\"" << std::endl;
+//            std::cout << "Parsing line \"" << *it << "\"" << std::endl;
 
 
             //Split de la formule
@@ -49,10 +49,9 @@ parseFile(const char *filepath, cume::Matrix<int> &dest, int &n_var, int &n_form
             std::copy(std::istream_iterator<std::string>(iss),
                       std::istream_iterator<std::string>(),
                       std::back_inserter(tokens));
-
-            for (auto it = tokens.begin(); it != tokens.end(); ++it)
-                std::cout << *it << " | ";
-            std::cout << std::endl;
+//            for (auto it = tokens.begin(); it != tokens.end(); ++it)
+//                std::cout << *it << " | ";
+//            std::cout << std::endl;
             tmp_formula f;
             //Premier et deuxième tokens : min et max de la formule
             f.min = std::stoi(tokens[0]);
@@ -88,7 +87,7 @@ parseFile(const char *filepath, cume::Matrix<int> &dest, int &n_var, int &n_form
     }
 
     n_formulas = formulas.size();
-
+/*
     for(auto it = name_id_table.begin(); it != name_id_table.end(); ++it){
         std::cout << "( " << it->first << " -> " << it->second << ") ";
     }
@@ -96,7 +95,7 @@ parseFile(const char *filepath, cume::Matrix<int> &dest, int &n_var, int &n_form
     for (auto it = formulas.begin(); it != formulas.end(); ++it) {
         std::cout << *it << std::endl;
     }
-
+*/
     dest = cume::Matrix<int>(n_formulas, n_var + 2);
 
     std::memset(dest.m_cpu_data, 0, dest.size() * sizeof(int));

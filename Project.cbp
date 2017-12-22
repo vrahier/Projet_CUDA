@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Project"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/etudiant/cuda-workspace/Projet_CUDA"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/etudiant/cuda-workspace/Projet_CUDA"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/etudiant/cuda-workspace/Projet_CUDA"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Gpu_satisfy">
+				<Option output="/home/etudiant/cuda-workspace/Projet_CUDA/Gpu_satisfy" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/etudiant/cuda-workspace/Projet_CUDA"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/4.9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/4.9"/>
+					<Add directory="/usr/include/c++/4.9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.9/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 Gpu_satisfy"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Gpu_satisfy/fast">
+				<Option output="/home/etudiant/cuda-workspace/Projet_CUDA/Gpu_satisfy" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/etudiant/cuda-workspace/Projet_CUDA"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/4.9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/4.9"/>
+					<Add directory="/usr/include/c++/4.9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.9/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 Gpu_satisfy/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Cume">
+				<Option output="/home/etudiant/cuda-workspace/Projet_CUDA/libCume.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/etudiant/cuda-workspace/Projet_CUDA"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/4.9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/4.9"/>
+					<Add directory="/usr/include/c++/4.9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.9/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 Cume"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Cume/fast">
+				<Option output="/home/etudiant/cuda-workspace/Projet_CUDA/libCume.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/etudiant/cuda-workspace/Projet_CUDA"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/4.9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/4.9"/>
+					<Add directory="/usr/include/c++/4.9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.9/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 Cume/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Cpu_satisfy">
+				<Option output="/home/etudiant/cuda-workspace/Projet_CUDA/Cpu_satisfy" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/etudiant/cuda-workspace/Projet_CUDA"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/4.9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/4.9"/>
+					<Add directory="/usr/include/c++/4.9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.9/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 Cpu_satisfy"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Cpu_satisfy/fast">
+				<Option output="/home/etudiant/cuda-workspace/Projet_CUDA/Cpu_satisfy" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/etudiant/cuda-workspace/Projet_CUDA"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/4.9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/4.9"/>
+					<Add directory="/usr/include/c++/4.9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.9/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 Cpu_satisfy/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="File">
+				<Option output="/home/etudiant/cuda-workspace/Projet_CUDA/libFile.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/etudiant/cuda-workspace/Projet_CUDA"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/4.9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/4.9"/>
+					<Add directory="/usr/include/c++/4.9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.9/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 File"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="File/fast">
+				<Option output="/home/etudiant/cuda-workspace/Projet_CUDA/libFile.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/etudiant/cuda-workspace/Projet_CUDA"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/4.9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/4.9"/>
+					<Add directory="/usr/include/c++/4.9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.9/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 File/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/etudiant/cuda-workspace/Projet_CUDA/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/etudiant/cuda-workspace/Projet_CUDA/CMakeFiles/Cume.dir/src/CuME/Cume_generated_cume_base.cu.o">
+			<Option target="Cume"/>
+		</Unit>
+		<Unit filename="/home/etudiant/cuda-workspace/Projet_CUDA/CMakeFiles/Cume.dir/src/CuME/Cume_generated_cume_devices.cu.o">
+			<Option target="Cume"/>
+		</Unit>
+		<Unit filename="/home/etudiant/cuda-workspace/Projet_CUDA/CMakeFiles/Cume.dir/src/CuME/Cume_generated_cume_gpu_timer.cu.o">
+			<Option target="Cume"/>
+		</Unit>
+		<Unit filename="/home/etudiant/cuda-workspace/Projet_CUDA/CMakeFiles/Cume.dir/src/CuME/Cume_generated_cume_kernel.cu.o">
+			<Option target="Cume"/>
+		</Unit>
+		<Unit filename="/home/etudiant/cuda-workspace/Projet_CUDA/CMakeFiles/Gpu_satisfy.dir/src/Gpu_satisfy_generated_solver.cu.o">
+			<Option target="Gpu_satisfy"/>
+		</Unit>
+		<Unit filename="/home/etudiant/cuda-workspace/Projet_CUDA/src/CuME/cume.h">
+			<Option target="Cume"/>
+		</Unit>
+		<Unit filename="/home/etudiant/cuda-workspace/Projet_CUDA/src/CuME/cume_base.cu">
+			<Option target="Cume"/>
+		</Unit>
+		<Unit filename="/home/etudiant/cuda-workspace/Projet_CUDA/src/CuME/cume_cpu_timer.cpp">
+			<Option target="Cume"/>
+		</Unit>
+		<Unit filename="/home/etudiant/cuda-workspace/Projet_CUDA/src/CuME/cume_cpu_timer.h">
+			<Option target="Cume"/>
+		</Unit>
+		<Unit filename="/home/etudiant/cuda-workspace/Projet_CUDA/src/CuME/cume_devices.cu">
+			<Option target="Cume"/>
+		</Unit>
+		<Unit filename="/home/etudiant/cuda-workspace/Projet_CUDA/src/CuME/cume_gpu_timer.cu">
+			<Option target="Cume"/>
+		</Unit>
+		<Unit filename="/home/etudiant/cuda-workspace/Projet_CUDA/src/CuME/cume_kernel.cu">
+			<Option target="Cume"/>
+		</Unit>
+		<Unit filename="/home/etudiant/cuda-workspace/Projet_CUDA/src/Solver.cpp">
+			<Option target="Cpu_satisfy"/>
+		</Unit>
+		<Unit filename="/home/etudiant/cuda-workspace/Projet_CUDA/src/Solver.h">
+			<Option target="Cpu_satisfy"/>
+		</Unit>
+		<Unit filename="/home/etudiant/cuda-workspace/Projet_CUDA/src/Utilities/file.cpp">
+			<Option target="File"/>
+		</Unit>
+		<Unit filename="/home/etudiant/cuda-workspace/Projet_CUDA/src/Utilities/file.h">
+			<Option target="File"/>
+		</Unit>
+		<Unit filename="/home/etudiant/cuda-workspace/Projet_CUDA/src/cpu_test.cpp">
+			<Option target="Cpu_satisfy"/>
+		</Unit>
+		<Unit filename="/home/etudiant/cuda-workspace/Projet_CUDA/src/cpu_timer.cpp">
+			<Option target="Cpu_satisfy"/>
+		</Unit>
+		<Unit filename="/home/etudiant/cuda-workspace/Projet_CUDA/src/cpu_timer.h">
+			<Option target="Cpu_satisfy"/>
+		</Unit>
+		<Unit filename="/home/etudiant/cuda-workspace/Projet_CUDA/src/solver.cu">
+			<Option target="Gpu_satisfy"/>
+		</Unit>
+		<Unit filename="/home/etudiant/cuda-workspace/Projet_CUDA/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

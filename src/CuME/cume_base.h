@@ -219,7 +219,7 @@ public:
 			action << "you have tried to copy host memory at address "; \
 			action << hex << cpu; \
 			action << " into device memory at address " << gpu; \
-			throw Exception(cudaGetErrorString(err), \
+			throw cume::Exception(cudaGetErrorString(err), \
 					action.str(), \
 					"one of the addresses might be wrong", __FILE__, __LINE__); \
 		} \
